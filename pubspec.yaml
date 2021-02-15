@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
 
   admob_flutter: ^1.0.1
+  rxdart: ^0.25.0
 
 dev_dependencies:
   flutter_test:
