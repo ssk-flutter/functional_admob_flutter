@@ -9,7 +9,27 @@ This project is a functional version of the [admob_flutter](https://pub.dev/pack
 ## First of all, you have to follow admob_flutter setup.
 [from here](https://pub.dev/packages/admob_flutter#android-specific-setup)
 
-## Simple Usage
+## One line functional Usage
+
+#### FunctionalAdmob.interstitial
+```
+import 'package:functional_admob_flutter/functional_admob.dart';
+```
+
+```
+  await FunctionalAdmob.interstitial('adUnitId');
+```
+
+#### FunctionalAdmob.reward
+```
+import 'package:functional_admob_flutter/functional_admob.dart';
+```
+
+```
+  await FunctionalAdmob.reward('adUnitId');
+```
+
+## Detailed Functional Usage
 
 #### FunctionalAdmobInterstitial
 ```
