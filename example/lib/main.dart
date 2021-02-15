@@ -4,8 +4,8 @@ import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
+import 'package:functional_admob_flutter/functional_admob_reward.dart';
 
-// import 'package:admob_flutter_example/extensions.dart';
 import 'new_page.dart';
 
 void main() {
@@ -27,7 +27,6 @@ class MyMaterialApp extends StatefulWidget {
 class _MyMaterialAppState extends State<MyMaterialApp> {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   AdmobBannerSize bannerSize;
-  AdmobReward rewardAd;
 
   @override
   void initState() {
@@ -36,19 +35,9 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
     // You should execute `Admob.requestTrackingAuthorization()` here before showing any ad.
 
     bannerSize = AdmobBannerSize.BANNER;
-
-        rewardAd = AdmobReward(
-      adUnitId: getRewardBasedVideoAdUnitId(),
-      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
-        if (event == AdmobAdEvent.closed) rewardAd.load();
-        handleEvent(event, args, 'Reward');
-      },
-    );
-
-    rewardAd.load();
   }
 
-  void handleEvent(
+  void _handleEvent(
       AdmobAdEvent event, Map<String, dynamic> args, String adType) {
     switch (event) {
       case AdmobAdEvent.loaded:
@@ -64,27 +53,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
         showSnackBar('Admob $adType failed to load. :(');
         break;
       case AdmobAdEvent.rewarded:
-        showDialog(
-          context: scaffoldState.currentContext,
-          builder: (BuildContext context) {
-            return WillPopScope(
-              child: AlertDialog(
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text('Reward callback fired. Thanks Andrew!'),
-                    Text('Type: ${args['type']}'),
-                    Text('Amount: ${args['amount']}'),
-                  ],
-                ),
-              ),
-              onWillPop: () async {
-                scaffoldState.currentState.hideCurrentSnackBar();
-                return true;
-              },
-            );
-          },
-        );
+        _dialogRewarded(args);
         break;
       default:
     }
@@ -149,20 +118,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               'Show Interstitial',
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () async {
-                              final interstitialAd =
-                                  FunctionalAdmobInterstitial(
-                                adUnitId: getInterstitialAdUnitId(),
-                              );
-
-                              showSnackBar('load Ad');
-                              if (!await interstitialAd.load())
-                                throw 'Failed to load interstitialAd';
-                              showSnackBar('show Ad');
-
-                              await interstitialAd.show();
-                              showSnackBar('close Ad');
-                            },
+                            onPressed: () => _demoFunctionalInterstitial(),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
@@ -174,13 +130,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               'Show Reward',
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () async {
-                              if (await rewardAd.isLoaded) {
-                                rewardAd.show();
-                              } else {
-                                showSnackBar('Reward ad is still loading...');
-                              }
-                            },
+                            onPressed: () => _demoFunctionalReward(),
                           ),
                         ),
                         Expanded(
@@ -201,7 +151,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               });
                             },
                             itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<AdmobBannerSize>>[
+                                <PopupMenuEntry<AdmobBannerSize>>[
                               PopupMenuItem(
                                 value: AdmobBannerSize.BANNER,
                                 child: Text('BANNER'),
@@ -229,9 +179,9 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               PopupMenuItem(
                                 value: AdmobBannerSize.ADAPTIVE_BANNER(
                                   width: MediaQuery.of(context)
-                                      .size
-                                      .width
-                                      .toInt() -
+                                          .size
+                                          .width
+                                          .toInt() -
                                       40, // considering EdgeInsets.all(20.0)
                                 ),
                                 child: Text('ADAPTIVE_BANNER'),
@@ -249,10 +199,10 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return NewPage(
-                                        title: 'Push Page',
-                                      );
-                                    }),
+                                  return NewPage(
+                                    title: 'Push Page',
+                                  );
+                                }),
                               );
                             },
                           ),
@@ -282,7 +232,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                                 adSize: bannerSize,
                                 listener: (AdmobAdEvent event,
                                     Map<String, dynamic> args) {
-                                  handleEvent(event, args, 'Banner');
+                                  _handleEvent(event, args, 'Banner');
                                 },
                                 onBannerCreated:
                                     (AdmobBannerController controller) {
@@ -346,9 +296,63 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
     // .withBottomAdmobBanner(context);
   }
 
+  Future _demoFunctionalInterstitial() async {
+    final interstitialAd = FunctionalAdmobInterstitial(
+      adUnitId: getInterstitialAdUnitId(),
+    );
+
+    showSnackBar('load Ad');
+    if (!await interstitialAd.load()) throw 'Failed to load interstitialAd';
+    showSnackBar('show Ad');
+
+    await interstitialAd.show();
+    showSnackBar('close Ad');
+  }
+
+  Future _demoFunctionalReward() async {
+    final rewardAd = FunctionalAdmobReward(
+      adUnitId: getRewardBasedVideoAdUnitId(),
+    );
+
+    showSnackBar('load reward Ad');
+    if (!await rewardAd.load()) throw 'Failed to load interstitialAd';
+    showSnackBar('show reward Ad');
+
+    final result = await rewardAd.show();
+    if (result != null) {
+      _dialogRewarded(result);
+      showSnackBar('reward success');
+    } else {
+      showSnackBar('reward failed');
+    }
+  }
+
+  void _dialogRewarded(Map<String, dynamic> result) {
+    showDialog(
+      context: scaffoldState.currentContext,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          child: AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text('Reward callback fired. Thanks Andrew!'),
+                Text('Type: ${result['type']}'),
+                Text('Amount: ${result['amount']}'),
+              ],
+            ),
+          ),
+          onWillPop: () async {
+            scaffoldState.currentState.hideCurrentSnackBar();
+            return true;
+          },
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
-    rewardAd.dispose();
     super.dispose();
   }
 }
