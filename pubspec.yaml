@@ -1,8 +1,8 @@
 name: functional_admob_flutter
 description: Functional Admob Flutter
 version: 0.0.1
-author:
-homepage:
+author: ssk
+repository: https://github.com/ssk-flutter/functional_admob_flutter
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
