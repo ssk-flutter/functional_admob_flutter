@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
 
 // import 'package:admob_flutter_example/extensions.dart';
 import 'new_page.dart';
-
-import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -156,15 +155,13 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                                 adUnitId: getInterstitialAdUnitId(),
                               );
 
-                              try {
-                                await interstitialAd.load();
-                                interstitialAd.show();
-                              } catch (error) {
-                                showSnackBar(
-                                    'Interstitial ad error... $error');
-                              } finally {
-                                interstitialAd.dispose();
-                              }
+                              showSnackBar('load Ad');
+                              if (!await interstitialAd.load())
+                                throw 'Failed to load interstitialAd';
+                              showSnackBar('show Ad');
+
+                              await interstitialAd.show();
+                              showSnackBar('close Ad');
                             },
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
