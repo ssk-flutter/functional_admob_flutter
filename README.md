@@ -19,7 +19,7 @@ import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
       adUnitId: getInterstitialAdUnitId(),
     );
 
-    if (!await interstitialAd.load()) throw 'Failed to load interstitialAd';
+    if (!await interstitialAd.load()) throw 'Failed to load interstitial Ad';
 
     await interstitialAd.show();
   }
@@ -36,7 +36,7 @@ import 'package:functional_admob_flutter/functional_admob_reward.dart';
       adUnitId: getRewardBasedVideoAdUnitId(),
     );
 
-    if (!await rewardAd.load()) throw 'Failed to load interstitialAd';
+    if (!await rewardAd.load()) throw 'Failed to load reward Ad';
 
     final result = await rewardAd.show();
     if (result != null) {

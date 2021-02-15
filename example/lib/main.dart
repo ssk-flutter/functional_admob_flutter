@@ -302,7 +302,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
     );
 
     showSnackBar('load Ad');
-    if (!await interstitialAd.load()) throw 'Failed to load interstitialAd';
+    if (!await interstitialAd.load()) throw 'Failed to load interstitial Ad';
     showSnackBar('show Ad');
 
     await interstitialAd.show();
@@ -315,7 +315,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
     );
 
     showSnackBar('load reward Ad');
-    if (!await rewardAd.load()) throw 'Failed to load interstitialAd';
+    if (!await rewardAd.load()) throw 'Failed to load reward Ad';
     showSnackBar('show reward Ad');
 
     final result = await rewardAd.show();
