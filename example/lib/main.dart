@@ -4,6 +4,7 @@ import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
+import 'package:functional_admob_flutter/functional_admob_reward.dart';
 
 // import 'package:admob_flutter_example/extensions.dart';
 import 'new_page.dart';
@@ -27,7 +28,6 @@ class MyMaterialApp extends StatefulWidget {
 class _MyMaterialAppState extends State<MyMaterialApp> {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   AdmobBannerSize bannerSize;
-  AdmobReward rewardAd;
 
   @override
   void initState() {
@@ -36,16 +36,6 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
     // You should execute `Admob.requestTrackingAuthorization()` here before showing any ad.
 
     bannerSize = AdmobBannerSize.BANNER;
-
-        rewardAd = AdmobReward(
-      adUnitId: getRewardBasedVideoAdUnitId(),
-      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
-        if (event == AdmobAdEvent.closed) rewardAd.load();
-        handleEvent(event, args, 'Reward');
-      },
-    );
-
-    rewardAd.load();
   }
 
   void handleEvent(
@@ -175,10 +165,42 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () async {
-                              if (await rewardAd.isLoaded) {
-                                rewardAd.show();
+                              final rewardAd =
+                              FunctionalAdmobReward(
+                                adUnitId: getRewardBasedVideoAdUnitId(),
+                              );
+
+                              showSnackBar('load reward Ad');
+                              if (!await rewardAd.load())
+                                throw 'Failed to load interstitialAd';
+                              showSnackBar('show reward Ad');
+
+                              final rewardResult = await rewardAd.show();
+                              if (rewardResult != null) {
+                                showDialog(
+                                  context: scaffoldState.currentContext,
+                                  builder: (BuildContext context) {
+                                    return WillPopScope(
+                                      child: AlertDialog(
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text('Reward callback fired. Thanks Andrew!'),
+                                            Text('Type: ${rewardResult['type']}'),
+                                            Text('Amount: ${rewardResult['amount']}'),
+                                          ],
+                                        ),
+                                      ),
+                                      onWillPop: () async {
+                                        scaffoldState.currentState.hideCurrentSnackBar();
+                                        return true;
+                                      },
+                                    );
+                                  },
+                                );
+                                showSnackBar('reward success');
                               } else {
-                                showSnackBar('Reward ad is still loading...');
+                                showSnackBar('reward failed');
                               }
                             },
                           ),
@@ -348,7 +370,6 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
 
   @override
   void dispose() {
-    rewardAd.dispose();
     super.dispose();
   }
 }
