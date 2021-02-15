@@ -4,13 +4,14 @@ Functional Admob Flutter
 
 ## Introduction
 
-This project is a functional version of admob_flutter
-[admob_flutter](https://pub.dev/packages/admob_flutter),
+This project is a functional version of the [admob_flutter](https://pub.dev/packages/admob_flutter),
 
 ## Simple Usage
 
 #### FunctionalAdmobInterstitial
-`import 'package:functional_admob_flutter/functional_admob_interstitial.dart';`
+```
+import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
+```
 
 ```
   Future _demoFunctionalInterstitial() async {
@@ -25,7 +26,9 @@ This project is a functional version of admob_flutter
 ```
 
 #### FunctionalAdmobReward
-`import 'package:functional_admob_flutter/functional_admob_reward.dart';`
+```
+import 'package:functional_admob_flutter/functional_admob_reward.dart';
+```
 
 ```
   Future _demoFunctionalReward() async {
