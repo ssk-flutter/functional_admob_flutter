@@ -37,7 +37,6 @@ class FunctionalAdmobInterstitial {
         case AdmobAdEvent.leftApplication:
           break;
         case AdmobAdEvent.closed:
-          _subjectShow.sink.add(true);
           _subjectShow.close();
           break;
         case AdmobAdEvent.completed:
