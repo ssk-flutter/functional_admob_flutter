@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:admob_flutter/admob_flutter.dart';
-// import 'package:admob_flutter_example/extensions.dart';
-import 'new_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+// import 'package:admob_flutter_example/extensions.dart';
+import 'new_page.dart';
+
+import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +28,6 @@ class MyMaterialApp extends StatefulWidget {
 class _MyMaterialAppState extends State<MyMaterialApp> {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   AdmobBannerSize bannerSize;
-  AdmobInterstitial interstitialAd;
   AdmobReward rewardAd;
 
   @override
@@ -36,15 +38,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
 
     bannerSize = AdmobBannerSize.BANNER;
 
-    interstitialAd = AdmobInterstitial(
-      adUnitId: getInterstitialAdUnitId(),
-      listener: (AdmobAdEvent event, Map<String, dynamic> args) {
-        if (event == AdmobAdEvent.closed) interstitialAd.load();
-        handleEvent(event, args, 'Interstitial');
-      },
-    );
-
-    rewardAd = AdmobReward(
+        rewardAd = AdmobReward(
       adUnitId: getRewardBasedVideoAdUnitId(),
       listener: (AdmobAdEvent event, Map<String, dynamic> args) {
         if (event == AdmobAdEvent.closed) rewardAd.load();
@@ -52,7 +46,6 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
       },
     );
 
-    interstitialAd.load();
     rewardAd.load();
   }
 
@@ -158,11 +151,19 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () async {
-                              if (await interstitialAd.isLoaded) {
+                              final interstitialAd =
+                                  FunctionalAdmobInterstitial(
+                                adUnitId: getInterstitialAdUnitId(),
+                              );
+
+                              try {
+                                await interstitialAd.load();
                                 interstitialAd.show();
-                              } else {
+                              } catch (error) {
                                 showSnackBar(
-                                    'Interstitial ad is still loading...');
+                                    'Interstitial ad error... $error');
+                              } finally {
+                                interstitialAd.dispose();
                               }
                             },
                             shape: RoundedRectangleBorder(
@@ -350,7 +351,6 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
 
   @override
   void dispose() {
-    interstitialAd.dispose();
     rewardAd.dispose();
     super.dispose();
   }
