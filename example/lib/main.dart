@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
 import 'package:functional_admob_flutter/functional_admob_reward.dart';
 
-// import 'package:admob_flutter_example/extensions.dart';
 import 'new_page.dart';
 
 void main() {
@@ -38,7 +37,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
     bannerSize = AdmobBannerSize.BANNER;
   }
 
-  void handleEvent(
+  void _handleEvent(
       AdmobAdEvent event, Map<String, dynamic> args, String adType) {
     switch (event) {
       case AdmobAdEvent.loaded:
@@ -152,7 +151,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               });
                             },
                             itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<AdmobBannerSize>>[
+                                <PopupMenuEntry<AdmobBannerSize>>[
                               PopupMenuItem(
                                 value: AdmobBannerSize.BANNER,
                                 child: Text('BANNER'),
@@ -180,9 +179,9 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               PopupMenuItem(
                                 value: AdmobBannerSize.ADAPTIVE_BANNER(
                                   width: MediaQuery.of(context)
-                                      .size
-                                      .width
-                                      .toInt() -
+                                          .size
+                                          .width
+                                          .toInt() -
                                       40, // considering EdgeInsets.all(20.0)
                                 ),
                                 child: Text('ADAPTIVE_BANNER'),
@@ -200,10 +199,10 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return NewPage(
-                                        title: 'Push Page',
-                                      );
-                                    }),
+                                  return NewPage(
+                                    title: 'Push Page',
+                                  );
+                                }),
                               );
                             },
                           ),
@@ -233,7 +232,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                                 adSize: bannerSize,
                                 listener: (AdmobAdEvent event,
                                     Map<String, dynamic> args) {
-                                  handleEvent(event, args, 'Banner');
+                                  _handleEvent(event, args, 'Banner');
                                 },
                                 onBannerCreated:
                                     (AdmobBannerController controller) {
