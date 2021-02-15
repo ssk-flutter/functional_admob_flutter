@@ -6,6 +6,9 @@ Functional Admob Flutter
 
 This project is a functional version of the [admob_flutter](https://pub.dev/packages/admob_flutter),
 
+## First of all, you have to follow admob_flutter setup.
+[from here](https://pub.dev/packages/admob_flutter#android-specific-setup)
+
 ## Simple Usage
 
 #### FunctionalAdmobInterstitial
