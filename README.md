@@ -17,7 +17,7 @@ import 'package:functional_admob_flutter/functional_admob.dart';
 ```
 
 ```
-  await FunctionalAdmob.interstitial('adUnitId');
+  await FunctionalAdmob.interstitial(adUnitId: 'adUnitId');
 ```
 
 #### FunctionalAdmob.reward
@@ -26,7 +26,7 @@ import 'package:functional_admob_flutter/functional_admob.dart';
 ```
 
 ```
-  await FunctionalAdmob.reward('adUnitId');
+  await FunctionalAdmob.reward(adUnitId: 'adUnitId');
 ```
 
 ## Detailed Functional Usage
