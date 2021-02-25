@@ -1,3 +1,4 @@
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/foundation.dart';
 
 import 'functional_admob_interstitial.dart';
@@ -31,4 +32,19 @@ class FunctionalAdmob {
 
     return await ad.show();
   }
+
+  static AdmobBanner banner({
+    @required String adUnitId,
+    @required AdmobBannerSize adSize,
+    void Function(AdmobAdEvent, Map<String, dynamic>) listener,
+    void Function(AdmobBannerController) onBannerCreated,
+    bool nonPersonalizedAds = false,
+  }) =>
+      AdmobBanner(
+        adUnitId: adUnitId,
+        adSize: adSize,
+        listener: listener,
+        onBannerCreated: onBannerCreated,
+        nonPersonalizedAds: nonPersonalizedAds,
+      );
 }

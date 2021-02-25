@@ -1,6 +1,7 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:functional_admob_flutter/functional_admob.dart';
 import 'package:functional_admob_flutter/functional_admob_interstitial.dart';
 import 'package:functional_admob_flutter/functional_admob_reward.dart';
 import 'package:selector/selector.dart';
@@ -226,7 +227,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(bottom: 20.0),
-                              child: AdmobBanner(
+                              child: FunctionalAdmob.banner(
                                 adUnitId: getBannerAdUnitId(),
                                 adSize: bannerSize,
                                 listener: (AdmobAdEvent event,
