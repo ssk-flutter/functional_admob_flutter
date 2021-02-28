@@ -29,6 +29,19 @@ import 'package:functional_admob_flutter/functional_admob.dart';
   await FunctionalAdmob.reward(adUnitId: 'adUnitId');
 ```
 
+#### FunctionalAdmob.banner (for your convenience)
+```
+import 'package:functional_admob_flutter/functional_admob.dart';
+```
+
+```
+Column(
+    children: [
+        FunctionalAdmob.banner(adUnitId: 'adUnitId', AdmobBannerSize.BANNER),
+    ] 
+)
+```
+
 ## Detailed Functional Usage
 
 #### FunctionalAdmobInterstitial
