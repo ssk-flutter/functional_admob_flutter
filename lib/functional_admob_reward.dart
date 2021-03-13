@@ -1,14 +1,13 @@
 import 'package:admob_flutter/admob_flutter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:rxdart/subjects.dart';
 
 class FunctionalAdmobReward {
   final _subjectLoad = BehaviorSubject<bool>();
-  final _subjectShow = BehaviorSubject<Map<String, dynamic>>();
-  AdmobReward _ad;
+  final _subjectShow = BehaviorSubject<Map<String, dynamic>?>();
+  late final AdmobReward _ad;
 
   FunctionalAdmobReward({
-    @required String adUnitId,
+    required String adUnitId,
     bool nonPersonalizedAds = false,
   }) {
     this._ad = AdmobReward(
@@ -17,8 +16,8 @@ class FunctionalAdmobReward {
         nonPersonalizedAds: nonPersonalizedAds);
   }
 
-  Function(AdmobAdEvent event, Map<String, dynamic> map) _createListener() {
-    return (AdmobAdEvent event, Map<String, dynamic> map) {
+  Function(AdmobAdEvent event, Map<String, dynamic?>? map) _createListener() {
+    return (AdmobAdEvent event, Map<String, dynamic?>? map) {
       // print('event: $event data: ${map}');
       switch (event) {
         case AdmobAdEvent.loaded:
@@ -37,7 +36,10 @@ class FunctionalAdmobReward {
         case AdmobAdEvent.leftApplication:
           break;
         case AdmobAdEvent.closed:
-          if (!_subjectShow.hasValue) _subjectShow.sink.add(null);
+          print('### meet closed');
+          if (_subjectShow.valueWrapper?.value == null) {
+            _subjectShow.sink.add(null);
+          }
           _subjectShow.close();
           break;
         case AdmobAdEvent.completed:
@@ -56,7 +58,7 @@ class FunctionalAdmobReward {
     return _subjectLoad.first;
   }
 
-  Future<Map<String, dynamic>> show() async {
+  Future<Map<String, dynamic>?> show() async {
     _ad.show();
     final result = await _subjectShow.first;
     dispose();

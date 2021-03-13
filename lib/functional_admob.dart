@@ -6,7 +6,7 @@ import 'functional_admob_reward.dart';
 
 class FunctionalAdmob {
   static Future<void> interstitial({
-    @required String adUnitId,
+    required String adUnitId,
     bool nonPersonalizedAds = false,
   }) async {
     final ad = FunctionalAdmobInterstitial(
@@ -19,8 +19,8 @@ class FunctionalAdmob {
     return await ad.show();
   }
 
-  static Future<Map<String, dynamic>> reward({
-    @required String adUnitId,
+  static Future<Map<String, dynamic>?> reward({
+    required String adUnitId,
     bool nonPersonalizedAds = false,
   }) async {
     final ad = FunctionalAdmobReward(
@@ -34,10 +34,10 @@ class FunctionalAdmob {
   }
 
   static AdmobBanner banner({
-    @required String adUnitId,
-    @required AdmobBannerSize adSize,
-    void Function(AdmobAdEvent, Map<String, dynamic>) listener,
-    void Function(AdmobBannerController) onBannerCreated,
+    required String adUnitId,
+    required AdmobBannerSize adSize,
+    void Function(AdmobAdEvent, Map<String, dynamic>?)? listener,
+    void Function(AdmobBannerController)? onBannerCreated,
     bool nonPersonalizedAds = false,
   }) =>
       AdmobBanner(
