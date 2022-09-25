@@ -5,10 +5,10 @@ import 'package:rxdart/subjects.dart';
 class FunctionalAdmobInterstitial {
   final _subjectLoad = BehaviorSubject<bool>();
   final _subjectShow = BehaviorSubject<bool>();
-  AdmobInterstitial _interstitialAd;
+  late final AdmobInterstitial _interstitialAd;
 
   FunctionalAdmobInterstitial({
-    @required String adUnitId,
+    required String adUnitId,
     bool nonPersonalizedAds = false,
   }) {
     this._interstitialAd = AdmobInterstitial(
@@ -17,8 +17,8 @@ class FunctionalAdmobInterstitial {
         nonPersonalizedAds: nonPersonalizedAds);
   }
 
-  Function(AdmobAdEvent event, Map<String, dynamic> map) _createListener() {
-    return (AdmobAdEvent event, Map<String, dynamic> map) {
+  Function(AdmobAdEvent event, Map<String, dynamic?>? map) _createListener() {
+    return (AdmobAdEvent event, Map<String, dynamic?>? map) {
       // print('event: $event data: ${map}');
       switch (event) {
         case AdmobAdEvent.loaded:
