@@ -1,4 +1,4 @@
-package functional.functional_admob_flutter_example
+package functional.example
 
 import io.flutter.embedding.android.FlutterActivity
 
